@@ -1,0 +1,97 @@
+1. Define the problem
+
+For this problem, we need to take the two reads and two indexes and match the barcodes to the 
+appropriate sequence and put them in an easily accessible folder. 
+
+2. Describe output
+
+The output will be 8 total folders. Two will contain the dual-matched reads, two with hopped, 
+two with unknown indexes, and two with low-quality reads. The dual-matched read folder will 
+contain one folder with R1 and one with R2. Both will contain R2 and the reverse complement of 
+R3 (should be == R2 for dual-matched.) 
+
+The hopped folder will contain one folder with R1 and one with R2. They will contain the R2 
+and the complement of R3 which will be different than R2. 
+
+The unknown indexes will contain one folder with R1 and one with R2. They will contain the R2 
+and the complement of R3. R2 may not be in our barcode index or it may include an unknown base pair.
+
+For the final folders, they will include R1 and R2 respectively and they will be dual-matched but 
+have not made the quality score baseline. 
+
+4. Pseudocode
+
+The input files will look like 
+
+R1          R2          R3          R4
+
+@seq1       @seq1       @seq1       @seq1
+ACGC        AA          TT          TCAA
++           +           +           +
+EEEE        EE          EE          EEEE
+
+...         ...         ...         ...
+
+R1 and R4 are sequences and R2 and R3 are indexes. R3 is a reverse complement of R2. There will be a 
+list of barcodes that we compare R2 to. If R2's barcode is not in the barcode list, we will put it in unknown. 
+
+- Check if the barcode in R2 is not in the barcodes list. If not, put the corresponding R1 and R4 
+in the unknown folders. 
+- For the barcodes (R2 and R3), convert the phred scores to quality scores and throw out all the 
+values that don't meet our cutoff of 30. They will go into the low-quality folders.
+- Check if R3 is the reverse complement of R2. If not, put them in the hopped folders. If they are, 
+go through the remaining records and put the R1 will go into the R1 dual-matched and the R4 will go 
+into the R4 dual-matched. 
+
+5. High level functions. For each function, be sure to include:
+    1. Description/doc string
+    2. Function headers (name and parameters)
+    3. Test examples for individual functions
+    4. Return statement
+
+def convert_phred(letter: str) -> int:
+    """Converts a single character into a phred score"""
+    return (ord(letter) - 33)
+
+    Input: I
+    Output: 40
+
+def reverse_comp:
+    """Decides whether the barcodes in a given file are reverse complements \
+    of barcodes in a different file"""
+    for barcode in R3
+        if barcode in R2
+    return(dual_matched)
+        else:
+        return(unmatched)
+
+    Input: AA, TT
+    Output: dual_matched
+
+def line_grabbing:
+    """A function that takes the second line of the file to isolate the sequences of the barcodes"""
+    for line in file:
+        if sequence:
+    return(sequence)
+
+    Input:  @seq
+            AATC
+            +
+            EEEE
+
+    Output: AATC
+
+def capturing_file_to_output:
+    """A function that takes the input files and spits them out into the proper file structures"""
+    for the input file:
+        if dual_matched:
+        write the whole record to the correct folder
+        etc.
+    return(different files)
+
+    Input: AATC (#dual-matched)
+    Output: @seq
+            AATC
+            +
+            EEEE
+            (#into folder dual_matched)
